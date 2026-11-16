@@ -26,3 +26,7 @@ data/index/
 # 绯荤粺鏂囦欢
 .DS_Store
 Thumbs.db
+
+# 备份与构建缓存
+*.bak
+*.tsbuildinfo
