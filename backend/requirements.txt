@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+faiss-cpu
+jieba
+rank-bm25
+numpy
+sentence-transformers
+requests
+openpyxl
+python-multipart

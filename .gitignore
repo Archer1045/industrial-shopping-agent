@@ -1,0 +1,28 @@
+# 环境与依赖
+.env
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+
+# 数据库（克隆后跑 python -m app.seed 生成）
+data/*.db
+data/index/
+
+# 内部协作记录（AI 结对的过程文件，不公开）
+.agent-handoff/
+
+# 截图与调试产物
+.tmp/
+.tmp_shot.png
+.tmp_shot_cdp.mjs
+.tmp_shot_cdp2.mjs
+.tmp_make_shot.py
+.tmp_cmp_retrieval.py
+.tmp_test_rerank.py
+.tmp_backend.log
+
+# 系统文件
+.DS_Store
+Thumbs.db
