@@ -386,7 +386,17 @@ flowchart LR
 
 需要 Python 3.10+，依赖见 `backend/requirements.txt`（fastapi / uvicorn / faiss-cpu / jieba / rank-bm25 / numpy / sentence-transformers），另外 LLM 调用用到 `requests`。bge-m3 模型需要提前下载到本地，路径在 `backend/app/rag/embedder.py` 的 `MODEL_DIR` 里配置（默认 `D:\AI\models\bge-m3`）。
 
-**2. 配置 `.env`（项目根）**
+**2. 配置 API Key（两种方式，选一个）**
+
+代码读的是 `os.getenv("DEEPSEEK_API_KEY")`，`.env` 只是本地开发的兜底——**没有这个文件也能跑**，只要环境变量在。
+
+**方式一：项目根建 `.env`（本地开发推荐）**
+
+```powershell
+Copy-Item .env.example .env      # bash/zsh 用 cp .env.example .env
+```
+
+然后填 key：
 
 ```ini
 DEEPSEEK_API_KEY=sk-xxxxxxxx
@@ -394,11 +404,25 @@ DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
 DEEPSEEK_MODEL=deepseek-chat
 ```
 
+**方式二：直接给进程环境变量（部署 / CI 推荐，不用建文件）**
+
+```powershell
+$env:DEEPSEEK_API_KEY = "sk-xxxxxxxx"        # 只在当前终端有效
+# 需要长期有效就写进用户环境变量，设完要重开终端
+[Environment]::SetEnvironmentVariable("DEEPSEEK_API_KEY", "sk-xxxxxxxx", "User")
+```
+
+```bash
+export DEEPSEEK_API_KEY=sk-xxxxxxxx          # Linux / macOS
+```
+
+> `.env` 已在 `.gitignore` 里，从来没进过 git 对象库；仓库里只有 `.env.example`（占位符，没有真实 key）。加载逻辑用 `os.environ.setdefault`，所以**环境变量优先，`.env` 只补缺的值**，两者不会打架。
+
 **3. 起后端**
 
 ```powershell
 cd backend
-python -m app.seed          # 首次：写入 45 条种子商品
+python -m app.seed          # 首次：写入 48 条种子商品
 python -m uvicorn app.main:app --port 8100
 ```
 
