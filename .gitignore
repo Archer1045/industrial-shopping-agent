@@ -10,8 +10,6 @@ dist/
 data/*.db
 data/index/
 
-# 内部协作记录（AI 结对的过程文件，不公开）
-.agent-handoff/
 
 # 截图与调试产物
 .tmp/
