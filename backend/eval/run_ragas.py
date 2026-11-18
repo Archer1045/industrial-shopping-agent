@@ -123,13 +123,15 @@ def build_row(case: dict, collected: dict) -> dict:
     demand = result.get("demand") or {}
     # 头型判定上线前采集的 raw 没有 head 字段，按同一套规则现补，
     # 先做简称归一（圆柱头、杯头），保证 replay 重算出来的行状态和线上判定口径一致。
-    if "head" not in demand:
+    # head 与 head_excluded 分别判缺：revision 2 的 raw 只有 head，没有 head_excluded。
+    if "head" not in demand or "head_excluded" not in demand:
         raw_query = normalize(str(demand.get("raw_query") or ""))
-        demand = {
-            **demand,
-            "head": extract_head(raw_query),
-            "head_excluded": excluded_heads(raw_query),
-        }
+        patch = {}
+        if "head" not in demand:
+            patch["head"] = extract_head(raw_query)
+        if "head_excluded" not in demand:
+            patch["head_excluded"] = excluded_heads(raw_query)
+        demand = {**demand, **patch}
     stage = result.get("stage")
 
     # 多需求：候选来自各行；缺参行没有候选，不参与召回

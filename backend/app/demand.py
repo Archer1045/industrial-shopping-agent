@@ -111,17 +111,22 @@ HEAD_WORDS = {
     "内六角": ("内六角",),
 }
 
-# 否定词：出现在同一子句里时，该子句的头型词算「被排除」。
+# 否定词：直接作用在头型词上时，该头型族算「被排除」。
 # 「除了外六角都行」「别给我外六角」「我不太想要外六角」都靠这里识别。
 _NEGATION_WORDS = (
     "不要", "不用", "不需要", "无需", "别用", "别给", "不是", "非",
     "除了", "不太想", "不太想要", "不想要",
 )
 
-# 放宽词：两族同时点名且出现这些词时，头型不作为约束；单独出现时清掉历史头型
+# 放宽词：两族同时点名且出现这些词时，头型不作为约束；整句只有放宽词时清掉历史头型
 _RELAX_WORDS = ("都行", "都可以", "都接受", "都ok", "无所谓", "哪种都", "不限", "随便", "都要")
 
-# 子句分隔：否定只看同一子句，避免「外六角的价格不要太贵」这种跨句误伤
+# 否定词与头型词之间允许夹的连词（「外六角和内六角都不要」）
+_HEAD_CONNECTORS = set("和与及、都也还就")
+# 否定词后允许夹的填充词（「别给我外六角」）
+_HEAD_FILLERS = set("我你给要用来拿选想")
+
+# 子句分隔：放宽判定只看同一子句，避免「数量不限」这种跨句误伤
 _CLAUSE_SPLIT = re.compile(r"[，,。；;！!？?\n]+")
 
 
@@ -130,40 +135,137 @@ def _clauses(text: str) -> list[str]:
     return [c.strip() for c in _CLAUSE_SPLIT.split(text or "") if c.strip()]
 
 
+# 头型词后面跟「的 + 属性」时是修饰语（「外六角的价格」「内六角的交期」），不算点名
+_HEAD_ATTRIBUTE_WORDS = ("价格", "价", "数量", "预算", "交期", "运费", "贵", "便宜", "多", "少")
+
+
+def _is_head_modifier(text: str, after: str) -> bool:
+    """头型词后面是不是「的 + 价格/数量/交期」这类属性修饰语。"""
+    if not after.startswith("的"):
+        return False
+    rest = after[1:]
+    return any(rest.startswith(w) for w in _HEAD_ATTRIBUTE_WORDS)
+
+
+def _negated_heads(text: str) -> list[str]:
+    """收集被否定词直接作用到的头型族（按出现顺序）。
+
+    revision 4 起不再「子句里出现否定词就排除该子句全部头型」，改为看否定词与头型词的
+    邻接关系：否定词后跳过填充词紧跟的头型算排除；否定词前跳过连词与头型词收集到的族
+    也算（「外六角和内六角都不要」）。中间隔着「价格」「数量」这类非连词时不算，
+    所以「外六角的价格不要太贵」不会误判成排除外六角。
+    """
+    hit: list[str] = []
+    all_words = [(head, w) for head, words in HEAD_WORDS.items() for w in words]
+    for neg in _NEGATION_WORDS:
+        start = 0
+        while True:
+            idx = text.find(neg, start)
+            if idx < 0:
+                break
+            start = idx + len(neg)
+            # 后向：否定词后面紧跟的头型词
+            j = idx + len(neg)
+            while j < len(text) and text[j] in _HEAD_FILLERS:
+                j += 1
+            for head, w in all_words:
+                if text.startswith(w, j) and head not in hit:
+                    hit.append(head)
+            # 前向：否定词前面，跳过连词与头型词
+            pos = idx
+            while pos > 0:
+                pos -= 1
+                if text[pos] in _HEAD_CONNECTORS:
+                    continue
+                matched = None
+                matched_len = 0
+                for head, w in all_words:
+                    if pos + 1 - len(w) >= 0 and text[pos + 1 - len(w):pos + 1] == w:
+                        matched = head
+                        matched_len = len(w)
+                        break
+                if matched:
+                    if matched not in hit:
+                        hit.append(matched)
+                    # 跳过整个头型词，继续往前找并列的族
+                    pos = pos + 1 - matched_len
+                    continue
+                break
+    # 按族在文本里第一次出现的位置排序，避免并列双否定返回顺序和原句不一致
+    order: dict[str, int] = {}
+    for idx, head in _heads_by_position(text):
+        order.setdefault(head, idx)
+    hit.sort(key=lambda h: order.get(h, len(text)))
+    return hit
+
+
+def _heads_by_position(text: str) -> list[tuple[int, str]]:
+    """按出现位置列出头型词，用于「最近一次表态」取值。
+
+    「外六角的价格」「内六角的交期」这类是修饰语，不算点名要这一族，跳过。
+    """
+    found: list[tuple[int, str]] = []
+    for head, words in HEAD_WORDS.items():
+        for w in words:
+            start = 0
+            while True:
+                idx = text.find(w, start)
+                if idx < 0:
+                    break
+                start = idx + len(w)
+                if _is_head_modifier(text, text[idx + len(w):]):
+                    continue
+                found.append((idx, head))
+    found.sort()
+    return found
+
+
 def _tagged_heads(text: str) -> tuple[list[str], list[str]]:
     """扫描文本里的头型词，返回 (点名的族, 被排除的族)。
 
-    按子句判断：子句里出现否定词，该子句的头型词算被排除；否则算点名。
-    这样「不要外六角和内六角」「外六角和内六角都不要」都能覆盖。
+    按出现顺序返回，点名的族里不含被否定的；两族都可能同时出现在两个列表之一。
     """
+    negated = _negated_heads(text)
     mentioned: list[str] = []
-    negated: list[str] = []
-    for clause in _clauses(text):
-        hit = [head for head, words in HEAD_WORDS.items() if any(w in clause for w in words)]
-        if not hit:
+    for _, head in _heads_by_position(text):
+        if head in negated or head in mentioned:
             continue
-        target = negated if any(w in clause for w in _NEGATION_WORDS) else mentioned
-        for head in hit:
-            if head not in target:
-                target.append(head)
+        mentioned.append(head)
     return mentioned, negated
+
+
+def _clause_relaxed(text: str) -> bool:
+    """放宽词是否与头型词出现在同一子句（「外六角内六角都行」）。"""
+    for clause in _clauses(text):
+        if not any(w in clause for w in _RELAX_WORDS):
+            continue
+        if any(any(w in clause for w in words) for words in HEAD_WORDS.values()):
+            return True
+    return False
+
+
+def _bare_relax(text: str) -> bool:
+    """整句只有放宽词时才算「头型不限」；「数量不限」「价格随便」不算。"""
+    rest = text.strip()
+    for w in _RELAX_WORDS:
+        rest = rest.replace(w, "")
+    rest = re.sub(r"[，,。；;！!？?\s]+", "", rest)
+    return rest in ("", "头型", "都", "哪个", "哪种")
 
 
 def extract_head(text: str) -> str | None:
     """提取用户点名的头型族；没点名头型时返回 None，后续不做头型判定。
 
-    否定语境（「不要外六角」）不算点名；两族都点名且带「都行」这类放宽词时也不作约束。
-    没写「外六角 / 内六角 / 六角头」的「六角螺母」之类不在这里猜，交给检索和正文说明。
+    同句改口按出现顺序取最近一次表态（「要外六角，改成内六角」→ 内六角）；
+    否定语境（「不要外六角」）不算点名；两族都点名且带放宽词时也不作约束。
     """
     mentioned, _ = _tagged_heads(text)
     named = set(mentioned)
-    if len(named) == 2 and any(w in text.lower() for w in _RELAX_WORDS):
+    if len(named) == 2 and _clause_relaxed(text):
         return None
-    if "外六角" in named:
-        return "外六角"
-    if "内六角" in named:
-        return "内六角"
-    return None
+    if _bare_relax(text):
+        return None
+    return mentioned[-1] if mentioned else None
 
 
 def excluded_heads(text: str) -> tuple[str, ...]:
@@ -185,10 +287,9 @@ def head_explicit(text: str) -> bool:
     """
     mentioned, negated = _tagged_heads(text)
     named = set(mentioned)
-    if len(named) == 2 and any(w in text.lower() for w in _RELAX_WORDS):
+    if len(named) == 2 and _clause_relaxed(text):
         return True
-    if not named and not negated and any(w in text.lower() for w in _RELAX_WORDS):
-        # 单说「随便 / 哪个都行」：头型不限，也算明确表态
+    if not named and not negated and _bare_relax(text):
         return True
     return bool(named) or bool(negated)
 
@@ -337,24 +438,28 @@ def merge_with_history(query: str, history: list | None) -> str | None:
 def _head_from_users(users: list[str]) -> tuple[str | None, tuple[str, ...]]:
     """按时间倒序找最近一次明确的头型表态。
 
-    返回 (要的族, 排除的族)。最近一句点名了某一族就取它；最近一句明确排除、
-    两族放宽或单纯说「随便」时返回 None，用来清除更早的旧头型。
-    全程没提过头型也返回 (None, ())。
+    返回 (要的族, 排除的族)。最近一句点名了某一族就取它；明确排除时累积前面几轮的
+    排除族（「不要外六角」+「内六角也不要」两族都排除）；两族放宽或单纯说「随便」
+    时返回 None，用来清除更早的旧头型。全程没提过头型也返回 (None, ())。
     """
+    excluded: list[str] = []
     for text in reversed(users):
         norm = normalize(text)
         mentioned, negated = _tagged_heads(norm)
         named = set(mentioned)
-        if len(named) == 2 and any(w in norm.lower() for w in _RELAX_WORDS):
+        if len(named) == 2 and _clause_relaxed(norm):
             return None, ()
-        if named:
-            return ("外六角" if "外六角" in named else "内六角"), ()
+        if mentioned:
+            return mentioned[-1], ()
         if negated:
-            return None, tuple(negated)
-        if any(w in norm.lower() for w in _RELAX_WORDS):
+            for head in negated:
+                if head not in excluded:
+                    excluded.insert(0, head)
+            continue
+        if _bare_relax(norm):
             # 只说「随便 / 哪个都行」：头型不限
             return None, ()
-    return None, ()
+    return (None, tuple(excluded)) if excluded else (None, ())
 
 
 def history_demand(history: list | None, limit: int = 4) -> dict | None:
@@ -413,13 +518,22 @@ def merge_demand(current: dict, prev: dict | None) -> dict:
     merged = dict(current)
     merged["category"] = prev["category"]
     merged["material"] = current["material"] or prev.get("material")
-    # 当前句明确表态时以当前为准（明确否定就是清空）；没提头型才继承历史
+    # 当前句明确表态时以当前为准；纯否定要累积历史排除族，只有放宽才清空
     if current.get("head_explicit"):
         merged["head"] = current.get("head")
-        merged["head_excluded"] = current.get("head_excluded") or ()
+        if current.get("head_relaxed"):
+            merged["head_excluded"] = ()
+        elif current.get("head"):
+            merged["head_excluded"] = tuple(current.get("head_excluded") or ())
+        else:
+            prev_excluded = tuple(prev.get("head_excluded") or ())
+            merged["head_excluded"] = tuple(
+                dict.fromkeys([*prev_excluded, *(current.get("head_excluded") or ())])
+            )
     else:
         merged["head"] = current.get("head") or prev.get("head")
         merged["head_excluded"] = current.get("head_excluded") or prev.get("head_excluded") or ()
+    merged["head_relaxed"] = bool(current.get("head_relaxed"))
     for key in ("process", "origin", "industry"):
         merged[key] = current.get(key) or prev.get(key)
     params = dict(prev.get("params") or {})
@@ -558,6 +672,7 @@ def parse_demand(query: str) -> dict:
         "head": extract_head(text),
         "head_excluded": excluded_heads(text),
         "head_explicit": head_explicit(text),
+        "head_relaxed": _bare_relax(text) or _clause_relaxed(text),
         "process": attrs.get("process"),
         "origin": attrs.get("origin"),
         "industry": attrs.get("industry"),

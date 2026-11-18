@@ -1,6 +1,6 @@
 # 当前交接状态
 
-> 最后更新：2026-11-17 16:05 · 渔渔（revision 3 独立复核，仍有正确性残留）
+> 最后更新：2026-11-18 22:42 · 阿渔（revision 4 实施，待独立复核）
 > 本文件只描述当前状态。历史过程见 `log/YYYY-MM-DD.md`。
 
 ## 项目背景
@@ -30,20 +30,23 @@ LangGraph 渐进编排改造已完成，最终 **approved（revision 3）** 并�
 - 完整 RAGAS 与波动解释齐全。
 - 最后一轮文本复核确认无默认 legacy 旧注释、无“零候选不适用”旧口径。
 
-## 进行中：头型冲突进 evaluate_row()（revision 3 已复核，仍需定点修正）
+## 进行中：头型冲突进 evaluate_row()（revision 4 已实施，待独立复核）
 
-- revision 3 共 3 个代码文件、+167/-1，未提交；渔渔 16:05 独立复核，未改实现。完整证据见 `.agent-handoff/log/2026-11-17.md` 16:05 记录。
-- **已读代码确认**：当前明确表态会同时覆盖 `head/head_excluded`，未表态则二者继承，旧 prev 缺排除字段安全。子句内任一否定词会排除该子句所有头型；standalone 放宽未限定头型语境；replay 只在缺 `head` 时补两个字段。
-- **已实际运行验证（通过）**：24 条 replay 保持 0.9583，其余指标和逐行关键字段不变；主自测的跨句另选、三种残留否定、双族放宽/双否定均通过。两族排除文案正确，`碳钢六角螺母 M10` 不判定；随便清空、排除族继承均正确。
-- **已实际运行验证（问题）**：`外六角的价格不要太贵` 误排除外六角；历史外六角后 `数量不限` / `价格随便` 误清头型。原始无头型字段 raw 与线上一致，但 revision 2 旧 raw（有 `head`、缺 `head_excluded`）线上 `attr_conflict`、replay 错成 `ok`。同句「要外六角，改成内六角」仍取外六角；连续「内六角也不要」会覆盖较早排除。
-- **建议**：暂不标最终 approved。revision 4 只修：否定与头型排除语义绑定、standalone 放宽限明确整句、`head/head_excluded` 分别判缺补值；同句改口按出现顺序。连续「也不要」的累积/覆盖口径另定并留回归。
-- 风险 4/5、多需求旧 raw 和 list 状态匹配继续留下一轮；在线模型、前端及 Excel/图片端到端未跑。
+- revision 4 只动 `backend/app/demand.py` 与 `backend/eval/run_ragas.py`，未改 `main.py`（revision 1 的 `_attr_conflicts`/`product_head` 保持）。完整证据见 `log/2026-11-18.md`。
+- **改动 1（否定与头型绑定）**：`_negated_heads()` 替代「子句含否定词就排除整句头型」——否定词后跳过填充词（我/给/要/用…）紧跟的头型算排除；否定词前跳过连词（和/与/都/也…）与头型词收集并列族。中间夹「价格」「数量」这类非连词时不算，`外六角的价格不要太贵` 不再误排除。
+- **改动 2（放宽限定）**：`_clause_relaxed()` 要求放宽词与头型词同子句；`_bare_relax()` 要求整句去掉宽词后没有其他实词。`数量不限`/`价格随便` 不再清空头型，只认 `随便`/`都行`/`外六角内六角都行`。
+- **改动 3（按出现顺序取最近表态）**：`extract_head()` 改用 `_heads_by_position()` 取最后出现的族，`要外六角，改成内六角` → 内六角。
+- **改动 4（修饰语不算点名）**：`_is_head_modifier()` 把头型词后接「的 + 价格/数量/交期/贵/便宜」的当修饰语跳过。
+- **改动 5（连续否定累积）**：`_head_from_users()` 从最近往前扫，否定族累积（`insert(0)` 保持时间序），遇点名/放宽清空；`parse_demand` 新增 `head_relaxed`；`merge_demand` 纯否定时把 `prev.head_excluded` 与当前并集，放宽才清空。
+- **改动 6（replay 分别补值）**：`run_ragas.py` 的 `head` 与 `head_excluded` 改成分别判缺，revision 2 旧 raw 也能补全。
+- **已实际运行验证**：`%TEMP%` 语义脚本 23/23 通过（价格否定、修饰语、并列双否定、数量/价格放宽、同句改口、历史累积、merge 三种分支、原有回归）；24 条 replay `row_status_accuracy=0.9583`，stage/match_kind/recall/mrr/hard/severe 全部不变。
+- 仍留下一轮：风险 4/5、多需求旧 raw、`_status_matches` 对 list 直接 False（`multi-rows-021`）；未跑在线模型与前端。
 
 ## 下一步
 
-1. 主责方按 16:05 记录做 revision 4 定点修正，再复测价格否定、非头型放宽、两代旧 raw 和 24 条 replay。
+1. 渔渔独立复核 revision 4（重点：否定邻接规则、放宽限定、累积口径、两代旧 raw）。
 2. 风险 4/5 下一轮；是否补在线 RAGAS 由主人决定。
-3. 其余方向仍待选：检索排序、Faithfulness 波动、面试材料整理。
+3. 其余方向仍待选：检索排序、Fine-tuning、面试材料整理。
 
 ## 阻塞
 
