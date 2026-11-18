@@ -1,0 +1,952 @@
+{
+  "meta": {
+    "started_at": "2026-11-16 23:19:38",
+    "mode": "replay（离线，零模型调用）",
+    "engine": "default",
+    "eval_model": "deepseek-chat",
+    "model": "deepseek-chat",
+    "embedding": "bge-m3（本地 D:\\AI\\models\\bge-m3）",
+    "concurrency": 2,
+    "elapsed": 0.0,
+    "collected_at": "2026-11-16 09:43:31"
+  },
+  "summary": {
+    "total": 24,
+    "stage_accuracy": 0.9583,
+    "match_kind_accuracy": 0.9375,
+    "match_kind_cases": 16,
+    "recall_at_3": 0.8958,
+    "recall_cases": 16,
+    "mrr": 0.9115,
+    "row_status_accuracy": 0.9583,
+    "row_status_cases": 24,
+    "hard_violation_rate": 0.0,
+    "hard_violation_cases": 15,
+    "severe_orderable_errors": 0,
+    "severe_scope_cases": 17,
+    "errors": 0,
+    "avg_elapsed": 5.16
+  },
+  "ragas": {
+    "applicable": 0,
+    "reason": "未运行（--rules-only / --replay）"
+  },
+  "rows": [
+    {
+      "case_id": "fastener-m8x30-001",
+      "user_input": "304 不锈钢 M8×30 内六角螺丝，要 1000 个",
+      "tags": [
+        "完整需求",
+        "硬约束",
+        "MOQ"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        91
+      ],
+      "candidate_ids": [
+        91,
+        99,
+        95
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "304 不锈钢内六角圆柱头螺丝 M8×30；M8×30mm；304不锈钢；GB/T 70.1；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.35；MOQ 1000；交期 2 天；全螺纹内六角圆柱头螺钉，A2-70 等级，防锈耐腐蚀，适合户外与潮湿环境",
+        "304 不锈钢内六角沉头螺丝 M8×30；M8×30mm；304不锈钢；GB/T 77；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.4；MOQ 1000；交期 2 天；沉头内六角螺钉，90° 沉头，适合需要平整表面的连接",
+        "碳钢镀锌外六角螺栓 M8×30；M8×30mm；碳钢；GB/T 5782；工艺 电镀锌；产地 国产；适用行业 建筑工程；¥0.22；MOQ 1000；交期 3 天；蓝白锌外六角螺栓，8.8 级，通用型紧固件，性价比高"
+      ],
+      "response": "**推荐（按匹配度排序）**\n\n1. **304 不锈钢内六角圆柱头螺丝 M8×30（东明，国产）** — 首选。材质 304、规格 M8×30、内六角、圆柱头全部匹配；A2-70 等级，冷镦工艺，防锈耐腐蚀，适合潮湿/户外。¥0.35/个，1000 个约 ¥350，MOQ 1000 正好等于需求量，交期 2 天。\n2. **304 不锈钢内六角沉头螺丝 M8×30（东明，国产）** — 备选。材质规格匹配，但为 90° 沉头，仅适用于需要沉孔、表面平整的装配；若你的安装面没有沉孔，不能用。¥0.4/个，MOQ 1000，交期 2 天。\n3. **碳钢镀锌外六角螺栓 M8×30（永固）** — 不推荐下单。这不是你要的 304 不锈钢内六角螺丝，而是碳钢镀锌外六角螺栓；材质、头型、驱动方式均不符，仅可作低价替代参考，且需确认防锈要求能否接受。\n\n**注意事项**\n\n- 第 1 项未注明螺纹类型（全螺纹/半螺纹）和精度等级细节，下单前向供应商确认是否为全螺纹、A2-70 是否有质保书。\n- 第 1、2 项 MOQ 均为 1000，刚好覆盖需求量，无超采；若后续有备件需求，可一次谈 1100–1200 的量价。\n- 交期 2 天为供应商标注，实际以确认库存后为准；1000 个属小批量，建议下单前确认现货。\n- 核对安装空间：圆柱头需预留头部高度空间，沉头需确认沉孔角度为 90°。\n- 304 不锈钢与碳钢件混用存在电偶腐蚀风险，若与镀锌件同结构装配需注意隔离。",
+      "reference": "推荐 304 不锈钢内六角圆柱头螺丝 M8×30mm（¥0.35/个，MOQ 1000），1000 个正好满足起订量，交期 2 天。",
+      "elapsed": 26.63,
+      "error": null
+    },
+    {
+      "case_id": "fastener-m8x50-002",
+      "user_input": "304 内六角 M8 螺丝，长度 50mm，要 1000 个",
+      "tags": [
+        "完整需求",
+        "硬约束"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        92
+      ],
+      "candidate_ids": [
+        92
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "304 不锈钢内六角圆柱头螺丝 M8×50；M8×50mm；304不锈钢；GB/T 70.1；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.52；MOQ 1000；交期 2 天；加长型内六角螺钉，适合厚板连接与设备固定"
+      ],
+      "response": "## 推荐\n\n1. **304 不锈钢内六角圆柱头螺丝 M8×50（东明，国产）** — 唯一匹配项。材质 304、规格 M8×50mm、内六角圆柱头均符合；冷镦工艺，适合机床设备及厚板连接固定。¥0.52/个，1000 个约 ¥520。\n\n## 注意事项\n\n- **MOQ**：1000 个起订，与需求量正好一致，可按此数量下单。\n- **交期**：标注 2 天，建议下单前与供应商确认现货库存。\n- **参数核对**：确认螺距（M8 粗牙 1.25mm）、头型（圆柱头）、强度等级（304 不锈钢通常为 A2-70）是否满足装配要求；如用于户外或潮湿环境，304 耐蚀性一般，需评估是否改用 316。\n- **价格**：¥0.52/个为候选报价，实际以下单时确认为准。",
+      "reference": "推荐 304 不锈钢内六角圆柱头螺丝 M8×50mm（¥0.52/个，MOQ 1000），长度与材质都符合。",
+      "elapsed": 4.82,
+      "error": null
+    },
+    {
+      "case_id": "fastener-m10x40-003",
+      "user_input": "304 不锈钢 M10×40 内六角螺丝，500 个",
+      "tags": [
+        "完整需求",
+        "硬约束"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        94
+      ],
+      "candidate_ids": [
+        94
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "304 不锈钢内六角圆柱头螺丝 M10×40；M10×40mm；304不锈钢；GB/T 70.1；工艺 冷镦；产地 国产；适用行业 建筑工程；¥0.78；MOQ 500；交期 2 天；大规格内六角螺钉，适合重型设备与钢结构连接"
+      ],
+      "response": "## 推荐\n\n1. **304 不锈钢内六角圆柱头螺丝 M10×40（东明，国产）** — 匹配度最高。材质 304、规格 M10×40、内六角圆柱头均与需求一致；冷镦工艺，适合重型设备与钢结构连接；MOQ 500 正好等于采购量，交期 2 天，¥0.78/个，500 个约 ¥390。\n\n## 注意事项\n\n- **MOQ**：该商品 MOQ 为 500，刚好满足；若后续需补货少量，可能需按 500 起订。\n- **交期**：标注 2 天，下单前建议与供应商确认现货库存，避免因库存波动延迟。\n- **参数核对**：确认所需为「圆柱头」内六角（非沉头/盘头）；确认螺纹为全牙或半牙、螺距（M10 常见 1.5mm 粗牙），到货后抽检材质（304 可用磁铁初判，弱磁为正常）。\n- **数量**：500 个为净用量，建议按 3%–5% 备损，即约 515–525 个，可与供应商确认是否拆零。\n- **价格**：¥0.78/个为候选报价，实际以下单时确认为准；可询问 500 个以上是否有阶梯价。",
+      "reference": "推荐 304 不锈钢内六角圆柱头螺丝 M10×40mm（¥0.78/个，MOQ 500），500 个刚好达到起订量。",
+      "elapsed": 4.75,
+      "error": null
+    },
+    {
+      "case_id": "bearing-6204-004",
+      "user_input": "6204-2RS 深沟球轴承，要 100 个",
+      "tags": [
+        "完整需求",
+        "型号直出"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        106
+      ],
+      "candidate_ids": [
+        106,
+        110,
+        136,
+        137,
+        108
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "深沟球轴承 6204-2RS（内径 20mm）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；GB/T 276；工艺 车削；产地 国产；适用行业 机床设备；¥8.5；MOQ 100；交期 3 天；双面橡胶密封深沟球轴承，内径 20mm，外径 47mm，广泛用于电机、风机",
+        "深沟球轴承 6001-2RS（内径 12mm）；内径 12mm 外径 28mm；型号 6001-2RS；轴承钢；GB/T 276；工艺 车削；产地 国产；适用行业 电子电气；¥3.5；MOQ 200；交期 3 天；双面橡胶密封深沟球轴承，内径 12mm，小型电机常用",
+        "深沟球轴承 6204-2RS（进口）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；ISO 15；工艺 车削；产地 进口·德国；适用行业 机床设备；¥38.0；MOQ 10；交期 15 天；德国进口深沟球轴承，双面橡胶密封，公差等级 P6，适合高转速主轴",
+        "深沟球轴承 6204-2RS（进口）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；ISO 15；工艺 车削；产地 进口·日本；适用行业 机床设备；¥26.0；MOQ 10；交期 10 天；日本进口深沟球轴承，静音性好，适合电机与泵类",
+        "深沟球轴承 6206-2RS（内径 30mm）；内径 30mm 外径 62mm；型号 6206-2RS；轴承钢；GB/T 276；工艺 车削；产地 国产；适用行业 机床设备；¥12.5；MOQ 100；交期 3 天；双面橡胶密封深沟球轴承，内径 30mm，外径 62mm，通用型"
+      ],
+      "response": "## 推荐（按匹配度排序）\n\n**1. 候选1：人本 6204-2RS（国产）— 最匹配，可直接下单**\n- 型号、内径20mm/外径47mm、双面橡胶密封均与需求一致，轴承钢材质。\n- MOQ 100 = 需求数量100，刚好达标；交期3天，单价¥8.5/个，100个约¥850。\n- 适用机床设备/电机风机，通用工况够用。\n\n**2. 候选4：NSK 6204-2RS（日本进口）— 型号匹配，需确认是否要进口**\n- 型号规格一致，静音性好，适合电机与泵类；MOQ 10，交期10天，¥26/个（100个约¥2600）。\n- 用户未明确要求进口，若对噪音/寿命有更高要求可选。\n\n**3. 候选3：SKF 6204-2RS（德国进口）— 型号匹配，高配选项**\n- 型号规格一致，公差等级P6，适合高转速主轴；MOQ 10，交期15天，¥38/个（100个约¥3800）。\n- 交期最长、单价最高，仅在明确需要高精度/高转速时选。\n\n## 不匹配项（不可下单）\n- **候选2（6001-2RS）**：不是6204，内径12mm/外径28mm，尺寸不符，且MOQ 200超需求。\n- **候选5（6206-2RS）**：不是6204，内径30mm/外径62mm，尺寸不符。\n\n## 注意事项\n- **MOQ**：候选1刚好100，无余量；若需备件建议按110~120下单，先与供应商确认是否可拆零。\n- **交期**：国产3天；进口10~15天，若产线急用优先候选1。\n- **参数核对**：下单前确认密封形式为2RS（双面橡胶接触式密封）、游隙等级（候选未标注，默认CN，若有C3等要求需向供应商确认）。\n- **产地/品牌**：候选1为国产人本；如实际要求进口或指定品牌，请勿用候选1替代。\n- 候选均未标注额定载荷、极限转速、精度等级（除候选3为P6），如有高转速或重载工况，需向供应商索取参数表核对。",
+      "reference": "推荐深沟球轴承 6204-2RS（内径 20mm 外径 47mm，¥8.5/个，MOQ 100），型号直出。",
+      "elapsed": 6.74,
+      "error": null
+    },
+    {
+      "case_id": "bearing-bore20-005",
+      "user_input": "内径 20mm 的深沟球轴承，50 个",
+      "tags": [
+        "完整需求",
+        "MOQ",
+        "数量约束"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        120,
+        136,
+        137
+      ],
+      "candidate_ids": [
+        106,
+        119,
+        136,
+        137,
+        120
+      ],
+      "recall_at_3": 0.3333,
+      "mrr": 0.3333,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "below_moq",
+      "row_status": "below_moq",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "深沟球轴承 6204-2RS（内径 20mm）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；GB/T 276；工艺 车削；产地 国产；适用行业 机床设备；¥8.5；MOQ 100；交期 3 天；双面橡胶密封深沟球轴承，内径 20mm，外径 47mm，广泛用于电机、风机",
+        "不锈钢轴承 S6204-2RS（内径 20mm）；内径 20mm 外径 47mm；型号 S6204-2RS；440C不锈钢；GB/T 276；工艺 车削钝化；产地 国产；适用行业 食品机械；¥16.0；MOQ 100；交期 5 天；全不锈钢深沟球轴承，防锈耐腐蚀，适合食品、医疗设备",
+        "深沟球轴承 6204-2RS（进口）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；ISO 15；工艺 车削；产地 进口·德国；适用行业 机床设备；¥38.0；MOQ 10；交期 15 天；德国进口深沟球轴承，双面橡胶密封，公差等级 P6，适合高转速主轴",
+        "深沟球轴承 6204-2RS（进口）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；ISO 15；工艺 车削；产地 进口·日本；适用行业 机床设备；¥26.0；MOQ 10；交期 10 天；日本进口深沟球轴承，静音性好，适合电机与泵类",
+        "陶瓷轴承 6204（内径 20mm）；内径 20mm 外径 47mm；型号 6204；氮化硅陶瓷；GB/T 276；工艺 烧结；产地 国产；适用行业 化工设备；¥45.0；MOQ 50；交期 7 天；陶瓷球轴承，耐高温、耐腐蚀、无磁，适合高速与特殊环境"
+      ],
+      "response": "## 推荐（按匹配度排序）\n\n1. **深沟球轴承 6204-2RS（人本，国产轴承钢）** — ¥8.5/个\n   内径 20mm 完全匹配，双面橡胶密封，通用性最好，交期 3 天最短。但 **MOQ 100 > 需求 50**，需按 100 个起订或与供应商协商。\n\n2. **不锈钢轴承 S6204-2RS（人本，440C）** — ¥16.0/个\n   内径 20mm 匹配，防锈耐腐蚀。若使用环境潮湿或有腐蚀介质可选；普通工况用不上，成本翻倍。同样 **MOQ 100 > 50**。\n\n3. **深沟球轴承 6204-2RS（NSK，日本进口）** — ¥26.0/个\n   内径 20mm 匹配，静音性好，**MOQ 10 满足 50 个**，交期 10 天。对噪音/寿命有要求时选它。\n\n4. **深沟球轴承 6204-2RS（SKF，德国进口）** — ¥38.0/个\n   内径 20mm 匹配，P6 公差，适合高转速主轴，**MOQ 10 满足**，但交期 15 天最长、单价最高。\n\n5. **陶瓷轴承 6204（哈轴，氮化硅）** — ¥45.0/个\n   内径 20mm 匹配，耐高温耐腐蚀无磁，**MOQ 50 刚好满足**。仅特殊工况（高温/腐蚀/无磁）才需要，普通用途不推荐。\n\n## 注意事项\n\n- **MOQ 是主要卡点**：前两款单价最低但 MOQ 100，实际采购量会是需求的 2 倍；若只要 50 个，优先看 NSK（MOQ 10）。\n- **交期差异大**：3 天（人本）到 15 天（SKF），按上线时间倒排。\n- **参数核对**：以上均为 6204 系列，内径 20mm / 外径 47mm，下单前确认安装空间和密封形式（2RS 为双面橡胶密封；若需铁盖密封或开式，候选里没有）。\n- **未提供的信息**：载荷、转速、公差等级（仅 SKF 标注 P6）、润滑脂牌号，候选未全部写明，不要自行假定；有明确转速/载荷要求时需向供应商索取参数表。\n- 数量 50 与 MOQ 100 的差额，建议先问供应商是否可拆零或走现货小批量。",
+      "reference": "用户只要 50 个：6204-2RS 的国产轴承钢款 106 和不锈钢款 119 起订量都是 100，超过 50，不能直接下单；能满足 50 个的只有陶瓷轴承 120（MOQ 50，¥45）和进口 NSK/SKF（136/137，MOQ 10）。应按 MOQ 口径提示 106 规格完全匹配但起订量不足，并给出 120 或 136/137 作为可立即下单的选项。",
+      "elapsed": 7.23,
+      "error": null
+    },
+    {
+      "case_id": "bearing-bore30-006",
+      "user_input": "内径 30mm 的深沟球轴承，100 个",
+      "tags": [
+        "完整需求",
+        "硬约束"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        108
+      ],
+      "candidate_ids": [
+        108,
+        118,
+        111
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "深沟球轴承 6206-2RS（内径 30mm）；内径 30mm 外径 62mm；型号 6206-2RS；轴承钢；GB/T 276；工艺 车削；产地 国产；适用行业 机床设备；¥12.5；MOQ 100；交期 3 天；双面橡胶密封深沟球轴承，内径 30mm，外径 62mm，通用型",
+        "带座轴承 UCF206（内径 30mm）；内径 30mm；型号 UCF206；轴承钢；GB/T 7810；工艺 车削压铸；产地 国产；适用行业 物流仓储；¥35.0；MOQ 50；交期 5 天；方形带座外球面轴承，内径 30mm，适合皮带机滚筒",
+        "圆锥滚子轴承 30206（内径 30mm）；内径 30mm 外径 62mm；型号 30206；轴承钢；GB/T 297；工艺 车削热处理；产地 国产；适用行业 汽车零部件；¥18.0；MOQ 50；交期 5 天；单列圆锥滚子轴承，可承受径向与轴向联合载荷，适合齿轮箱、车轮"
+      ],
+      "response": "## 推荐\n\n**1. 深沟球轴承 6206-2RS（内径 30mm）— 人本 — ¥12.5/个**\n唯一完全匹配：类型为深沟球轴承、内径 30mm、双面橡胶密封、通用型。MOQ 100 正好等于采购量，交期 3 天。可下单。\n\n**2. 带座轴承 UCF206（内径 30mm）— 人本 — ¥35.0/个**\n这不是你要的深沟球轴承，而是带座外球面轴承。内径虽为 30mm，但结构为方形座+外球面，用于皮带机滚筒安装，不能替代深沟球轴承装入轴承位。不建议作为替代。\n\n**3. 圆锥滚子轴承 30206（内径 30mm）— 哈轴 — ¥18.0/个**\n这不是你要的深沟球轴承，而是单列圆锥滚子轴承。内径 30mm、外径 62mm 与 6206 同尺寸段，但类型不同，承受径向+轴向联合载荷，不能直接替换深沟球轴承。不建议作为替代。\n\n## 注意事项\n\n- **型号核对**：6206 对应内径 30mm、外径 62mm、宽度 16mm，下单前确认设备轴径与轴承位尺寸一致；后缀 2RS 为双面橡胶密封，若原机为铁盖（ZZ）或开式，需确认是否可替换。\n- **MOQ 与数量**：商品 1 的 MOQ 为 100，正好覆盖需求，无多余库存压力；商品 2、3 的 MOQ 为 50，但类型不符，不建议凑单。\n- **交期**：商品 1 交期 3 天，可按需安排；如急需，确认供应商现货情况。\n- **品牌与产地**：候选均为国产（人本/哈轴），如现场有指定品牌或进口要求，需另行询价，候选信息中无进口货源。\n- **价格**：¥12.5/个为候选报价，100 个合计约 ¥1250，实际以下单时供应商报价为准。",
+      "reference": "推荐深沟球轴承 6206-2RS（内径 30mm，¥12.5/个，MOQ 100）。",
+      "elapsed": 6.19,
+      "error": null
+    },
+    {
+      "case_id": "electrical-dz47-007",
+      "user_input": "DZ47-63 断路器，C16 的，要 20 个",
+      "tags": [
+        "完整需求",
+        "电气参数"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        123
+      ],
+      "candidate_ids": [
+        123,
+        124,
+        132,
+        122,
+        131
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "断路器 DZ47-63 C16 2P；AC220V 16A 2P；型号 DZ47-63；-；GB/T 10963.1；工艺 注塑；产地 国产；适用行业 建筑工程；¥12.0；MOQ 20；交期 2 天；小型断路器，C 型 16A 2 极，适合照明与插座回路",
+        "断路器 DZ47-63 C32 3P；AC380V 32A 3P；型号 DZ47-63；-；GB/T 10963.1；工艺 注塑；产地 国产；适用行业 建筑工程；¥18.0；MOQ 20；交期 2 天；小型断路器，C 型 32A 3 极，适合三相设备总开关",
+        "导轨 35mm 铝制 1 米；35mm×1m；-；GB/T 14048.5；工艺 挤压；产地 国产；适用行业 电子电气；¥12.0；MOQ 20；交期 2 天；标准 35mm 铝制 DIN 导轨，1 米/根，安装断路器、端子",
+        "交流接触器 CJX2-2510 220V；AC220V 25A；型号 CJX2-2510；-；GB/T 14048.4；工艺 注塑；产地 国产；适用行业 机床设备；¥45.0；MOQ 10；交期 3 天；25A 交流接触器，线圈电压 220V，适合较大功率电机",
+        "接线端子 UK-2.5B 灰色；2.5mm² 800V；型号 UK-2.5B；-；IEC 60947-7-1；工艺 注塑；产地 国产；适用行业 电子电气；¥0.8；MOQ 1000；交期 2 天；导轨式接线端子，2.5 平方，灰色，配 35mm 导轨"
+      ],
+      "response": "**推荐（按匹配度排序）**\n\n1. **断路器 DZ47-63 C16 2P｜正泰｜¥12/个｜MOQ 20｜交期 2 天**\n   - 唯一完全匹配型号 DZ47-63、C 型脱扣、16A 的候选，2P 适合照明/插座回路。\n   - 数量 20 正好满足 MOQ 20，可直接下单。\n\n**注意事项**\n\n- 候选 1 未标注极数需求，你只给了「C16」，2P 是常规单相回路配置；若现场需要 1P 或 3P，需另行确认，不能按此下单。\n- 候选 2 是 C32 3P，电流和极数都不符，不要替代。\n- 候选 3、4、5 分别是导轨、接触器、端子，不是断路器，仅可作配套件考虑（导轨用于安装）。\n- 下单前核对：额定电压（AC220V）、脱扣曲线 C、极数、是否带漏电附件；交期 2 天为候选标注，实际以供应商确认为准。",
+      "reference": "推荐断路器 DZ47-63 C16 2P（AC220V 16A 2P，¥12/个，MOQ 20），C16 与 2P 都符合。",
+      "elapsed": 4.98,
+      "error": null
+    },
+    {
+      "case_id": "electrical-s350-008",
+      "user_input": "S-350-24 开关电源 24V，5 个",
+      "tags": [
+        "完整需求",
+        "电气参数",
+        "MOQ"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        133
+      ],
+      "candidate_ids": [
+        133,
+        128,
+        132,
+        134,
+        122
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "开关电源 S-350-24 24V 14.6A；DC24V 14.6A 350W；型号 S-350-24；-；GB 4943.1；工艺 注塑；产地 国产；适用行业 电子电气；¥85.0；MOQ 5；交期 3 天；工业开关电源，输出 24V 14.6A 350W，适合 PLC、传感器供电",
+        "中间继电器 MY2NJ 24VDC；DC24V 2NO+2NC；型号 MY2NJ；-；GB/T 14048.5；工艺 注塑；产地 国产；适用行业 电子电气；¥15.0；MOQ 20；交期 3 天；2 开 2 闭中间继电器，24V 直流线圈，带指示灯",
+        "导轨 35mm 铝制 1 米；35mm×1m；-；GB/T 14048.5；工艺 挤压；产地 国产；适用行业 电子电气；¥12.0；MOQ 20；交期 2 天；标准 35mm 铝制 DIN 导轨，1 米/根，安装断路器、端子",
+        "变频器 0.75KW 220V；AC220V 0.75kW；型号 MD200S0.75B；-；GB/T 12668.2；工艺 注塑；产地 国产；适用行业 机床设备；¥320.0；MOQ 1；交期 5 天；单相 220V 输入，0.75kW 通用变频器，V/F 控制，适合风机水泵",
+        "交流接触器 CJX2-2510 220V；AC220V 25A；型号 CJX2-2510；-；GB/T 14048.4；工艺 注塑；产地 国产；适用行业 机床设备；¥45.0；MOQ 10；交期 3 天；25A 交流接触器，线圈电压 220V，适合较大功率电机"
+      ],
+      "response": "## 推荐\n\n**1. 开关电源 S-350-24 24V 14.6A（明纬，国产）— 唯一匹配，可下单**\n- 型号 S-350-24、输出 DC24V 14.6A 350W，与需求型号和 24V 参数完全一致。\n- MOQ 5，正好等于采购数量 5 个，可按 MOQ 起订。\n- 交期 3 天，单价 ¥85.0/个，5 个合计 ¥425.0。\n- 适用 PLC、传感器供电，属常规工业开关电源用途。\n\n其余候选（中间继电器、DIN 导轨、变频器、交流接触器）均非开关电源，不满足需求，不建议下单。\n\n## 注意事项\n- **数量与 MOQ**：该商品 MOQ 恰为 5，采购 5 个刚好达标，无多余库存压力；若后续需备件，需按 5 的倍数追加。\n- **参数核对**：下单前与供应商确认输出为 DC24V、额定 14.6A/350W，并核对安装尺寸与接线端子形式是否匹配现场。\n- **交期**：报价交期 3 天，建议下单时书面确认发货时间。\n- **品牌/产地**：候选为国产明纬，如现场原设备要求特定品牌或进口版本，需另行确认，本候选不保证为进口件。",
+      "reference": "推荐开关电源 S-350-24（DC24V 14.6A 350W，¥85/个，MOQ 5），5 个正好达到起订量。",
+      "elapsed": 5.11,
+      "error": null
+    },
+    {
+      "case_id": "origin-import-009",
+      "user_input": "进口的 6204 轴承，要 50 个",
+      "tags": [
+        "软属性",
+        "产地"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        136,
+        137
+      ],
+      "candidate_ids": [
+        137,
+        136,
+        119,
+        114,
+        113
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "深沟球轴承 6204-2RS（进口）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；ISO 15；工艺 车削；产地 进口·日本；适用行业 机床设备；¥26.0；MOQ 10；交期 10 天；日本进口深沟球轴承，静音性好，适合电机与泵类",
+        "深沟球轴承 6204-2RS（进口）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；ISO 15；工艺 车削；产地 进口·德国；适用行业 机床设备；¥38.0；MOQ 10；交期 15 天；德国进口深沟球轴承，双面橡胶密封，公差等级 P6，适合高转速主轴",
+        "不锈钢轴承 S6204-2RS（内径 20mm）；内径 20mm 外径 47mm；型号 S6204-2RS；440C不锈钢；GB/T 276；工艺 车削钝化；产地 国产；适用行业 食品机械；¥16.0；MOQ 100；交期 5 天；全不锈钢深沟球轴承，防锈耐腐蚀，适合食品、医疗设备",
+        "调心球轴承 1205（内径 25mm）；内径 25mm 外径 52mm；型号 1205；轴承钢；GB/T 281；工艺 车削；产地 国产；适用行业 物流仓储；¥22.0；MOQ 50；交期 5 天；调心球轴承，允许轴与座有一定角度偏差，适合长轴",
+        "推力球轴承 51105（内径 25mm）；内径 25mm 外径 42mm；型号 51105；轴承钢；GB/T 301；工艺 车削；产地 国产；适用行业 机床设备；¥15.0；MOQ 50；交期 5 天；单向推力球轴承，只能承受轴向载荷，适合立式设备"
+      ],
+      "response": "## 推荐（按匹配度排序）\n\n**1. NSK 6204-2RS 日本进口 — 首选**\n- 完全满足：进口、型号 6204、深沟球结构，数量 50 可下单（MOQ 10）。\n- 单价 ¥26，50 个约 ¥1300，交期 10 天，性价比与交期平衡最好。\n- 双面橡胶密封，静音性好，适合电机、泵类通用场景。\n\n**2. SKF 6204-2RS 德国进口 — 次选**\n- 同样满足进口 + 6204，公差等级 P6，适合高转速主轴等要求较高的场合。\n- 单价 ¥38，50 个约 ¥1900，交期 15 天，比 NSK 贵约 46%、慢 5 天。\n- 若设备对旋转精度有明确要求再选它，否则 NSK 更划算。\n\n## 不建议下单的候选\n- **候选 3（人本 S6204-2RS）**：这不是你要的进口轴承，而是国产不锈钢轴承。型号为 S6204 非 6204，且 MOQ 100 高于你的 50，不能按 50 下单。仅当你后续改要防锈/食品级场景时再考虑。\n- **候选 4（1205）、候选 5（51105）**：型号、内径（25mm）均不符，不是 6204，不要下单。\n\n## 注意事项\n- **密封形式**：两个进口候选都是 2RS（双面橡胶密封）。若你的工况需要开式或金属防尘盖（ZZ），需另行确认，当前候选不覆盖。\n- **MOQ/数量**：NSK、SKF 均 MOQ 10，50 个可直接下单；下单前确认供应商是否按整包（如 10 个/盒）发货。\n- **交期**：进口件交期 10–15 天，若有停机检修计划请预留时间，必要时先问是否有现货库存。\n- **参数核对**：6204 标准为内径 20mm / 外径 47mm，下单前与设备图纸核对游隙等级（如 C3）和公差等级要求，候选未标注游隙，需向供应商确认。\n- **正品与渠道**：进口轴承仿品较多，要求供应商提供品牌授权或原厂包装、批次号，收货验真。",
+      "reference": "推荐进口深沟球轴承 6204-2RS：德国 SKF（¥38/个，MOQ 10）或日本 NSK（¥26/个，MOQ 10），两者都是进口件。",
+      "elapsed": 7.11,
+      "error": null
+    },
+    {
+      "case_id": "origin-germany-010",
+      "user_input": "德国进口的 6204 深沟球轴承，50 个",
+      "tags": [
+        "软属性",
+        "产地",
+        "排序"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        136
+      ],
+      "candidate_ids": [
+        136,
+        137,
+        106,
+        108,
+        110
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "深沟球轴承 6204-2RS（进口）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；ISO 15；工艺 车削；产地 进口·德国；适用行业 机床设备；¥38.0；MOQ 10；交期 15 天；德国进口深沟球轴承，双面橡胶密封，公差等级 P6，适合高转速主轴",
+        "深沟球轴承 6204-2RS（进口）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；ISO 15；工艺 车削；产地 进口·日本；适用行业 机床设备；¥26.0；MOQ 10；交期 10 天；日本进口深沟球轴承，静音性好，适合电机与泵类",
+        "深沟球轴承 6204-2RS（内径 20mm）；内径 20mm 外径 47mm；型号 6204-2RS；轴承钢；GB/T 276；工艺 车削；产地 国产；适用行业 机床设备；¥8.5；MOQ 100；交期 3 天；双面橡胶密封深沟球轴承，内径 20mm，外径 47mm，广泛用于电机、风机",
+        "深沟球轴承 6206-2RS（内径 30mm）；内径 30mm 外径 62mm；型号 6206-2RS；轴承钢；GB/T 276；工艺 车削；产地 国产；适用行业 机床设备；¥12.5；MOQ 100；交期 3 天；双面橡胶密封深沟球轴承，内径 30mm，外径 62mm，通用型",
+        "深沟球轴承 6001-2RS（内径 12mm）；内径 12mm 外径 28mm；型号 6001-2RS；轴承钢；GB/T 276；工艺 车削；产地 国产；适用行业 电子电气；¥3.5；MOQ 200；交期 3 天；双面橡胶密封深沟球轴承，内径 12mm，小型电机常用"
+      ],
+      "response": "## 推荐（按匹配度排序）\n\n**1. 候选1：SKF 6204-2RS，德国进口，¥38/个，MOQ 10，交期15天**\n唯一同时满足「德国进口 + 6204 + 深沟球」的选项。双面橡胶密封、公差P6，适合高转速主轴。数量50满足MOQ，可下单。\n\n**2. 候选2：NSK 6204-2RS，日本进口，¥26/个，MOQ 10，交期10天**\n这不是你要的德国进口，而是日本进口。型号6204、尺寸、密封形式均匹配，静音性好，适合电机与泵类。若可接受非德国产地，可作为替代，价格更低、交期更短。\n\n**3. 候选3：人本 6204-2RS，国产，¥8.5/个，MOQ 100，交期3天**\n这不是你要的德国进口，而是国产。型号尺寸匹配，但MOQ 100高于你的50件需求，需按100件起订。仅作降本备选。\n\n候选4（6206）、候选5（6001）型号不符，不建议。\n\n## 注意事项\n- **产地核对**：仅候选1为德国进口；候选2为日本、候选3为国产，下单前确认是否接受替代产地。\n- **MOQ**：候选1、2为10件，50件可满足；候选3需100件起订。\n- **交期**：候选1为15天，若有工期要求需提前锁定；候选2为10天。\n- **参数核对**：6204对应内径20mm/外径47mm，下单前与设备轴径、安装空间复核；密封形式为2RS（双面橡胶密封），若需开式或金属防尘盖需另选。\n- **价格**：候选1单价明显高于2、3，德国进口溢价需确认预算。",
+      "reference": "首选德国 SKF 深沟球轴承 6204-2RS（进口·德国，¥38/个，MOQ 10），其余国产或日系件不满足产地要求。",
+      "elapsed": 5.38,
+      "error": null
+    },
+    {
+      "case_id": "material-304-011",
+      "user_input": "要 304 不锈钢的 M8×30 外六角螺栓，1000 个",
+      "tags": [
+        "软属性",
+        "头型冲突",
+        "304"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        91,
+        95
+      ],
+      "candidate_ids": [
+        91,
+        99,
+        95
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "attr_conflict",
+      "row_status": "attr_conflict",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "304 不锈钢内六角圆柱头螺丝 M8×30；M8×30mm；304不锈钢；GB/T 70.1；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.35；MOQ 1000；交期 2 天；全螺纹内六角圆柱头螺钉，A2-70 等级，防锈耐腐蚀，适合户外与潮湿环境",
+        "304 不锈钢内六角沉头螺丝 M8×30；M8×30mm；304不锈钢；GB/T 77；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.4；MOQ 1000；交期 2 天；沉头内六角螺钉，90° 沉头，适合需要平整表面的连接",
+        "碳钢镀锌外六角螺栓 M8×30；M8×30mm；碳钢；GB/T 5782；工艺 电镀锌；产地 国产；适用行业 建筑工程；¥0.22；MOQ 1000；交期 3 天；蓝白锌外六角螺栓，8.8 级，通用型紧固件，性价比高"
+      ],
+      "response": "## 推荐\n\n**没有完全匹配的候选商品。** 你要的是「304 不锈钢 + 外六角头 + M8×30」，三个候选里没有一件同时满足。\n\n按可用性排序：\n\n1. **候选3 碳钢镀锌外六角螺栓 M8×30（永固）** — 头型（外六角）和规格（M8×30）对，但**这不是你要的 304 不锈钢，而是碳钢镀锌**。8.8 级强度高于 A2-70，价格最低（¥0.22/个），MOQ 1000、交期 3 天。仅在「防锈要求不高、可接受镀锌件」时可用；潮湿/户外环境不建议。\n2. **候选1 304 不锈钢内六角圆柱头 M8×30（东明）** — **这不是你要的外六角，而是内六角圆柱头**。材质 304、规格 M8×30、A2-70、MOQ 1000、交期 2 天均符合，¥0.35/个。若安装工具（内六角扳手）和头部空间可接受，材质与防腐要求能满足。\n3. **候选2 304 不锈钢内六角沉头 M8×30（东明）** — **这不是你要的外六角，而是内六角沉头**。材质规格符合，但沉头需沉孔、连接面受力方式不同，一般不作为外六角的替代，除非你的结构本来就要求平头沉孔。\n\n**结论：** 若必须 304 + 外六角，需另行询源，现有候选不能直接下单。若可放宽头型，选候选1；若可放宽材质，选候选3。\n\n## 注意事项\n\n- **头型/材质二选一**：下单前确认哪个属性可让步，不要按「外六角 304」直接下候选1或3的单。\n- **MOQ**：三款均为 1000，你的需求量正好卡在起订量，无余量，建议按 1000+3%~5% 备损下单。\n- **交期**：候选1/2 为 2 天，候选3 为 3 天，均为厂家标称，未含物流时间。\n- **参数核对**：M8×30 的 30mm 是全长还是螺纹长度需与供应商确认；候选1 标注全螺纹。另需确认螺纹精度（粗牙/细牙）、强度等级（A2-70 或 8.8）是否满足你的图纸。\n- **价格**：候选价为单价参考，1000 件总价约 ¥220~¥400，未含税运，需询实际报价。",
+      "reference": "库里 M8×30 外六角螺栓只有碳钢镀锌款（¥0.22），没有 304 不锈钢外六角；应如实说明材质不符，或推荐 304 内六角圆柱头 M8×30（¥0.35）。",
+      "elapsed": 6.54,
+      "error": null
+    },
+    {
+      "case_id": "alternative-m12x80-012",
+      "user_input": "M12×80 的内六角螺丝，要 100 个",
+      "tags": [
+        "无精确匹配",
+        "替代",
+        "硬约束"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        96,
+        94
+      ],
+      "candidate_ids": [
+        96,
+        103,
+        94,
+        93,
+        92
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [
+        "碳钢热镀锌外六角螺栓 M12×60: 长度不符（要求 80mm，实际 60mm）",
+        "碳钢六角螺母 M10: spec 不含 M12（实际 M10）",
+        "碳钢六角螺母 M10: 长度不符（要求 80mm，实际 -）",
+        "304 不锈钢内六角圆柱头螺丝 M10×40: spec 不含 M12（实际 M10×40mm）",
+        "304 不锈钢内六角圆柱头螺丝 M10×40: 长度不符（要求 80mm，实际 40mm）",
+        "304 不锈钢内六角圆柱头螺丝 M6×20: spec 不含 M12（实际 M6×20mm）",
+        "304 不锈钢内六角圆柱头螺丝 M6×20: 长度不符（要求 80mm，实际 20mm）",
+        "304 不锈钢内六角圆柱头螺丝 M8×50: spec 不含 M12（实际 M8×50mm）",
+        "304 不锈钢内六角圆柱头螺丝 M8×50: 长度不符（要求 80mm，实际 50mm）"
+      ],
+      "expected_match_kind": "alternative",
+      "actual_match_kind": "alternative",
+      "match_kind_ok": true,
+      "expected_row_status": "alternative_only",
+      "row_status": "alternative_only",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "碳钢热镀锌外六角螺栓 M12×60；M12×60mm；碳钢；GB/T 5782；工艺 热镀锌；产地 国产；适用行业 建筑工程；¥0.95；MOQ 500；交期 3 天；热镀锌外六角螺栓，8.8 级，锌层厚，适合户外钢结构",
+        "碳钢六角螺母 M10；M10；碳钢；GB/T 6170；工艺 电镀锌；产地 国产；适用行业 通用装配；¥0.09；MOQ 10000；交期 3 天；镀锌六角螺母，8 级，与外六角螺栓配套",
+        "304 不锈钢内六角圆柱头螺丝 M10×40；M10×40mm；304不锈钢；GB/T 70.1；工艺 冷镦；产地 国产；适用行业 建筑工程；¥0.78；MOQ 500；交期 2 天；大规格内六角螺钉，适合重型设备与钢结构连接",
+        "304 不锈钢内六角圆柱头螺丝 M6×20；M6×20mm；304不锈钢；GB/T 70.1；工艺 冷镦；产地 国产；适用行业 电子电气；¥0.18；MOQ 2000；交期 2 天；小规格内六角螺钉，适合精密设备与仪器装配",
+        "304 不锈钢内六角圆柱头螺丝 M8×50；M8×50mm；304不锈钢；GB/T 70.1；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.52；MOQ 1000；交期 2 天；加长型内六角螺钉，适合厚板连接与设备固定"
+      ],
+      "response": "> 没有完全匹配的规格（长度要求 80mm，候选 60mm），以下是可替代的候选，下单前请确认是否可用。\n\n## 推荐\n\n**没有可直接下单的候选商品。** 5 个候选均不满足 M12×80 内六角螺丝的核心规格，逐条说明如下：\n\n1. **候选3（304 不锈钢内六角圆柱头螺丝 M10×40）** — 不是你要的 M12×80，而是 M10×40。品类（内六角圆柱头）和材质（304）对得上，但规格小两档、长度短一半，不能替代 M12×80 使用。\n2. **候选5（304 不锈钢内六角圆柱头螺丝 M8×50）** — 不是你要的 M12×80，而是 M8×50。同上，规格不符。\n3. **候选4（304 不锈钢内六角圆柱头螺丝 M6×20）** — 不是你要的 M12×80，而是 M6×20。规格差距过大，不可用。\n4. **候选1（碳钢热镀锌外六角螺栓 M12×60）** — 不是你要的内六角，而是外六角；且长度 60mm 不足 80mm。直径 M12 对得上，但头型和长度均不符，不能下单。\n5. **候选2（碳钢六角螺母 M10）** — 不是螺丝，是螺母，且规格 M10，完全不匹配。\n\n## 注意事项\n\n- **需重新询源**：请补充 M12×80 内六角螺丝的材质要求（碳钢 8.8/10.9 级，还是 304/316 不锈钢）、表面处理（发黑/镀锌/本色）和头型（圆柱头/沉头/盘头），据此重新找货。\n- **数量与 MOQ 冲突风险**：现有内六角螺丝候选 MOQ 为 500～2000，你只要 100 个，即使规格对上也可能达不到起订量，需提前确认是否可拆零或走现货零售渠道。\n- **交期**：候选交期 2～3 天仅供参考，规格不符不作数；新货源交期需另行确认。\n- **参数核对**：下单前核对螺纹规格（M12 粗牙/细牙）、长度定义（是否含头）、强度等级和材质证明，避免到货不符。",
+      "reference": "库里没有 M12×80 的内六角螺丝，只有碳钢热镀锌外六角 M12×60（¥0.95，MOQ 500）和 304 内六角 M10×40（¥0.78）。应标注为替代候选并说明长度不符。",
+      "elapsed": 5.76,
+      "error": null
+    },
+    {
+      "case_id": "attr-conflict-013",
+      "user_input": "进口的 6204 轴承，内径 25mm 的，要 50 个",
+      "tags": [
+        "软属性",
+        "属性冲突",
+        "诚实性"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        107
+      ],
+      "candidate_ids": [
+        114,
+        117,
+        113,
+        107
+      ],
+      "recall_at_3": 0.0,
+      "mrr": 0.25,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "attr_conflict",
+      "row_status": "attr_conflict",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "调心球轴承 1205（内径 25mm）；内径 25mm 外径 52mm；型号 1205；轴承钢；GB/T 281；工艺 车削；产地 国产；适用行业 物流仓储；¥22.0；MOQ 50；交期 5 天；调心球轴承，允许轴与座有一定角度偏差，适合长轴",
+        "带座轴承 UCP205（内径 25mm）；内径 25mm；型号 UCP205；轴承钢；GB/T 7810；工艺 车削压铸；产地 国产；适用行业 物流仓储；¥28.0；MOQ 50；交期 5 天；立式带座外球面轴承，内径 25mm，安装方便，适合输送线",
+        "推力球轴承 51105（内径 25mm）；内径 25mm 外径 42mm；型号 51105；轴承钢；GB/T 301；工艺 车削；产地 国产；适用行业 机床设备；¥15.0；MOQ 50；交期 5 天；单向推力球轴承，只能承受轴向载荷，适合立式设备",
+        "深沟球轴承 6205-2RS（内径 25mm）；内径 25mm 外径 52mm；型号 6205-2RS；轴承钢；GB/T 276；工艺 车削；产地 国产；适用行业 机床设备；¥9.8；MOQ 100；交期 3 天；双面橡胶密封深沟球轴承，内径 25mm，外径 52mm，适合中等载荷"
+      ],
+      "response": "## 推荐\n\n**没有可下单的候选商品。** 你要求的是「进口 6204 深沟球轴承，内径 25mm，50 个」，候选里没有一条同时满足「进口」和「6204」这两个明确属性，因此不能把任何一条写成可下单。\n\n按接近程度排序说明：\n\n1. **深沟球轴承 6205-2RS（内径 25mm）** — 这是你要的 6204 吗？不是，它是 6205-2RS，且产地国产，不是进口。类型（深沟球）、内径（25mm）对得上，但型号不同：6204 外径 47mm、厚度 14mm；6205 外径 52mm、厚度 15mm，安装尺寸不通用，不能直接替代。另外 MOQ 100，你只要 50 个，不满足起订量。\n2. **调心球轴承 1205（内径 25mm）** — 这不是你要的 6204，而是调心球轴承，且国产。内径虽为 25mm，但类型、外径（52mm）、载荷特性都不同，不能替代深沟球 6204。\n3. **带座轴承 UCP205（内径 25mm）** — 这不是你要的 6204，而是带座外球面轴承，且国产。结构完全不同，不能替代。\n4. **推力球轴承 51105（内径 25mm）** — 这不是你要的 6204，而是单向推力球轴承，且国产。只能承受轴向载荷，不能替代承受径向载荷的 6204。\n\n## 注意事项\n\n- **型号必须核对**：6204 的安装尺寸是内径 20mm、外径 47mm、厚度 14mm。你写「6204 内径 25mm」本身存在矛盾——6204 标准内径是 20mm，内径 25mm 对应的是 6205。请先确认到底要 6204（内径 20mm）还是 6205（内径 25mm），否则下单必错。\n- **进口属性**：候选全部为国产（人本、哈轴），无进口货源，需另行询进口渠道（如 SKF、NSK、FAG 等），并确认产地证明。\n- **MOQ 与交期**：候选 MOQ 多为 50，6205-2RS 为 100；交期 3–5 天，均为国产件参考，进口件交期通常更长，需单独确认。\n- **密封/游隙/精度等级**：6204 常见变体有开式、ZZ 铁盖、2RS 橡胶密封，游隙 C0/C3，精度 P0/P6，采购前需与设备要求核对，候选未提供这些参数。",
+      "reference": "进口 6204 轴承内径只有 20mm，内径 25mm 的进口件库里没有；若给国产 6205-2RS（内径 25mm）必须标注产地不符，不能标可下单。",
+      "elapsed": 6.17,
+      "error": null
+    },
+    {
+      "case_id": "missing-spec-014",
+      "user_input": "我要买螺丝",
+      "tags": [
+        "缺参",
+        "追问"
+      ],
+      "expected_stage": "clarify",
+      "actual_stage": "clarify",
+      "stage_ok": true,
+      "expected_product_ids": [],
+      "candidate_ids": [],
+      "recall_at_3": null,
+      "mrr": null,
+      "recall_applicable": false,
+      "hard_violations": [],
+      "expected_match_kind": null,
+      "actual_match_kind": null,
+      "match_kind_ok": null,
+      "expected_row_status": "not_applicable",
+      "row_status": null,
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [],
+      "response": "你要的是哪种螺纹规格的螺丝，比如 M8？",
+      "reference": "缺少螺纹规格，应只追问一个最关键的参数（如 M8），并给 M4–M12 选项。",
+      "elapsed": 1.99,
+      "error": null
+    },
+    {
+      "case_id": "missing-length-015",
+      "user_input": "304 不锈钢 M8 螺丝，要 1000 个",
+      "tags": [
+        "缺参",
+        "追问"
+      ],
+      "expected_stage": "clarify",
+      "actual_stage": "clarify",
+      "stage_ok": true,
+      "expected_product_ids": [],
+      "candidate_ids": [],
+      "recall_at_3": null,
+      "mrr": null,
+      "recall_applicable": false,
+      "hard_violations": [],
+      "expected_match_kind": null,
+      "actual_match_kind": null,
+      "match_kind_ok": null,
+      "expected_row_status": "not_applicable",
+      "row_status": null,
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [],
+      "response": "这批304不锈钢M8螺丝的长度是多少，比如30mm？",
+      "reference": "已给螺纹规格 M8，缺长度，应追问长度（如 30mm）并给 10–60mm 选项。",
+      "elapsed": 2.02,
+      "error": null
+    },
+    {
+      "case_id": "missing-bore-016",
+      "user_input": "要能耐高温的轴承",
+      "tags": [
+        "缺参",
+        "追问"
+      ],
+      "expected_stage": "clarify",
+      "actual_stage": "clarify",
+      "stage_ok": true,
+      "expected_product_ids": [],
+      "candidate_ids": [],
+      "recall_at_3": null,
+      "mrr": null,
+      "recall_applicable": false,
+      "hard_violations": [],
+      "expected_match_kind": null,
+      "actual_match_kind": null,
+      "match_kind_ok": null,
+      "expected_row_status": "not_applicable",
+      "row_status": null,
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [],
+      "response": "这个耐高温轴承的内径是多少毫米？",
+      "reference": "未给内径，无法定位型号，应追问内径并给 8–30mm 选项。",
+      "elapsed": 1.98,
+      "error": null
+    },
+    {
+      "case_id": "out-of-scope-017",
+      "user_input": "我想买个扳手",
+      "tags": [
+        "库外品类",
+        "拒答"
+      ],
+      "expected_stage": "out_of_scope",
+      "actual_stage": "out_of_scope",
+      "stage_ok": true,
+      "expected_product_ids": [],
+      "candidate_ids": [],
+      "recall_at_3": null,
+      "mrr": null,
+      "recall_applicable": false,
+      "hard_violations": [],
+      "expected_match_kind": null,
+      "actual_match_kind": null,
+      "match_kind_ok": null,
+      "expected_row_status": "not_applicable",
+      "row_status": null,
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [],
+      "response": "本店只收录紧固件、轴承、电气元件三类，没有扳手这类工具。若需拆装螺丝，可看对应规格的螺栓、螺母等紧固件。",
+      "reference": "扳手不在紧固件/轴承/电气元件三类内，应如实说明没有，并给就近替代方向（如拆装用螺栓螺母）。",
+      "elapsed": 2.6,
+      "error": null
+    },
+    {
+      "case_id": "multi-turn-018",
+      "user_input": "30mm 的，要 1000 个",
+      "tags": [
+        "多轮",
+        "补充参数"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        91
+      ],
+      "candidate_ids": [
+        91,
+        95,
+        99
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "304 不锈钢内六角圆柱头螺丝 M8×30；M8×30mm；304不锈钢；GB/T 70.1；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.35；MOQ 1000；交期 2 天；全螺纹内六角圆柱头螺钉，A2-70 等级，防锈耐腐蚀，适合户外与潮湿环境",
+        "碳钢镀锌外六角螺栓 M8×30；M8×30mm；碳钢；GB/T 5782；工艺 电镀锌；产地 国产；适用行业 建筑工程；¥0.22；MOQ 1000；交期 3 天；蓝白锌外六角螺栓，8.8 级，通用型紧固件，性价比高",
+        "304 不锈钢内六角沉头螺丝 M8×30；M8×30mm；304不锈钢；GB/T 77；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.4；MOQ 1000；交期 2 天；沉头内六角螺钉，90° 沉头，适合需要平整表面的连接"
+      ],
+      "response": "## 推荐（按匹配度排序）\n\n1. **304 不锈钢内六角圆柱头螺丝 M8×30（东明）** — ¥0.35/个，1000 个约 ¥350\n   - 规格完全匹配 M8×30，MOQ 1000 正好等于需求量，交期 2 天最短。\n   - 304 不锈钢防锈耐腐蚀，通用性强；若用于潮湿或户外环境优先选它。\n\n2. **碳钢镀锌外六角螺栓 M8×30（永固）** — ¥0.22/个，1000 个约 ¥220\n   - 规格匹配，MOQ 1000，交期 3 天，价格最低。\n   - 8.8 级碳钢镀锌，适合一般建筑/通用紧固；注意镀锌件在潮湿环境防锈能力弱于 304。\n\n3. **304 不锈钢内六角沉头螺丝 M8×30（东明）** — ¥0.4/个，1000 个约 ¥400\n   - 规格匹配，MOQ 1000，交期 2 天。\n   - 仅当安装面需要沉头齐平（如面板、滑轨）时选它；普通连接用圆柱头更合适。\n\n## 注意事项\n\n- **头型/驱动方式未指定**：候选含内六角圆柱头、外六角、内六角沉头三种，请按安装工具和沉孔条件确认，不要混订。\n- **材质/表面处理未指定**：304 不锈钢 vs 碳钢镀锌，价差约 60%，按使用环境（是否潮湿、是否户外）定。\n- **强度等级**：候选 1 为 A2-70，候选 2 为 8.8 级，承载要求高时需核对。\n- **MOQ 与数量**：三家 MOQ 均为 1000，正好满足；如需备损建议加订 3%–5%，需与供应商确认是否按 1000 起订加量。\n- **交期**：2–3 天为供应商标注，下单前确认库存现货，避免排产延迟。\n- 价格与库存为候选信息，下单前请复核规格书和实物等级标记。",
+      "reference": "结合上文 M8 与 30mm，推荐 304 不锈钢内六角圆柱头螺丝 M8×30mm（¥0.35，MOQ 1000）。",
+      "elapsed": 5.42,
+      "error": null
+    },
+    {
+      "case_id": "multi-turn-019",
+      "user_input": "要 2000 个",
+      "tags": [
+        "多轮",
+        "数量覆盖"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "results",
+      "stage_ok": true,
+      "expected_product_ids": [
+        91
+      ],
+      "candidate_ids": [
+        91,
+        99,
+        95
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": "exact",
+      "match_kind_ok": true,
+      "expected_row_status": "ok",
+      "row_status": "ok",
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [
+        "304 不锈钢内六角圆柱头螺丝 M8×30；M8×30mm；304不锈钢；GB/T 70.1；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.35；MOQ 1000；交期 2 天；全螺纹内六角圆柱头螺钉，A2-70 等级，防锈耐腐蚀，适合户外与潮湿环境",
+        "304 不锈钢内六角沉头螺丝 M8×30；M8×30mm；304不锈钢；GB/T 77；工艺 冷镦；产地 国产；适用行业 机床设备；¥0.4；MOQ 1000；交期 2 天；沉头内六角螺钉，90° 沉头，适合需要平整表面的连接",
+        "碳钢镀锌外六角螺栓 M8×30；M8×30mm；碳钢；GB/T 5782；工艺 电镀锌；产地 国产；适用行业 建筑工程；¥0.22；MOQ 1000；交期 3 天；蓝白锌外六角螺栓，8.8 级，通用型紧固件，性价比高"
+      ],
+      "response": "## 推荐（按匹配度排序）\n\n**1. 304 不锈钢内六角圆柱头螺丝 M8×30（东明，国产）**\n- 完全匹配：304 不锈钢、M8×30、内六角、圆柱头，A2-70 等级。\n- 数量 2000 满足 MOQ 1000，交期 2 天，单价 ¥0.35/个，合计约 ¥700。\n- 冷镦工艺，适合机床设备及潮湿/户外环境，是本次需求的首选。\n\n**2. 304 不锈钢内六角沉头螺丝 M8×30（东明，国产）**\n- 材质、规格、内六角均匹配，但为**沉头**而非圆柱头。\n- 若你的安装面需要沉孔、要求表面平整，可选；否则头型与常规内六角圆柱头不同，需确认图纸。\n- 单价 ¥0.4/个，MOQ 1000，交期 2 天。\n\n**3. 碳钢镀锌外六角螺栓 M8×30（永固）——不建议下单**\n- 这不是你要的 304 不锈钢内六角螺丝，而是碳钢镀锌外六角螺栓。\n- 材质（碳钢 vs 304）、头型（外六角 vs 内六角）均不符，仅规格 M8×30 相同，不能替代。\n\n## 注意事项\n- **头型核对**：候选 1 为圆柱头，候选 2 为沉头，下单前确认图纸要求的头型。\n- **MOQ/数量**：2000 件均满足 MOQ 1000，可按需下单；建议确认是否含税、运费。\n- **参数核对**：确认螺纹类型（全螺纹/半螺纹）、强度等级 A2-70 是否满足工况；沉头款需核对沉头角度 90°。\n- **交期**：候选 1、2 均为 2 天，属现货类，建议下单前与供应商确认库存。",
+      "reference": "沿用上一轮 M8×30 与材质，数量更新为 2000 个，总价约 ¥700，MOQ 1000 满足。",
+      "elapsed": 5.25,
+      "error": null
+    },
+    {
+      "case_id": "multi-rows-020",
+      "user_input": "螺丝 M8 和 M10 各要 1000 个",
+      "tags": [
+        "多需求",
+        "拆行"
+      ],
+      "expected_stage": "multi",
+      "actual_stage": "multi",
+      "stage_ok": true,
+      "expected_product_ids": [
+        91,
+        94
+      ],
+      "candidate_ids": [
+        95,
+        102,
+        99,
+        103,
+        94
+      ],
+      "recall_at_3": null,
+      "mrr": null,
+      "recall_applicable": false,
+      "hard_violations": [],
+      "expected_match_kind": null,
+      "actual_match_kind": null,
+      "match_kind_ok": null,
+      "expected_row_status": [
+        "missing_param",
+        "missing_param"
+      ],
+      "row_status": [
+        "missing_param",
+        "missing_param"
+      ],
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [],
+      "response": "共 2 条需求，匹配到 2 条。明细在右侧。",
+      "reference": "拆成两行：M8 一行、M10 一行，各 1000 个；缺长度时标缺参数而不是直接给可下单。",
+      "elapsed": 0.93,
+      "error": null
+    },
+    {
+      "case_id": "multi-rows-021",
+      "user_input": "304 和 316 的 M8×30 螺丝，要 1000 个",
+      "tags": [
+        "问题暴露",
+        "材质并列",
+        "单需求"
+      ],
+      "expected_stage": "results",
+      "actual_stage": "multi",
+      "stage_ok": false,
+      "expected_product_ids": [
+        91
+      ],
+      "candidate_ids": [
+        91,
+        99,
+        95,
+        91,
+        99,
+        95
+      ],
+      "recall_at_3": 1.0,
+      "mrr": 1.0,
+      "recall_applicable": true,
+      "hard_violations": [],
+      "expected_match_kind": "exact",
+      "actual_match_kind": null,
+      "match_kind_ok": false,
+      "expected_row_status": "ok",
+      "row_status": [
+        "ok",
+        "ok"
+      ],
+      "row_status_ok": false,
+      "severe_orderable_error": false,
+      "contexts": [],
+      "response": "共 2 条需求，匹配到 2 条。明细在右侧。",
+      "reference": "材质并列属于同一个需求（不是两条），应推荐 304 不锈钢 M8×30（¥0.35），并说明库里没有 316 材质。",
+      "elapsed": 0.71,
+      "error": null
+    },
+    {
+      "case_id": "chat-weather-022",
+      "user_input": "今天天气怎么样",
+      "tags": [
+        "闲聊"
+      ],
+      "expected_stage": "chat",
+      "actual_stage": "chat",
+      "stage_ok": true,
+      "expected_product_ids": [],
+      "candidate_ids": [],
+      "recall_at_3": null,
+      "mrr": null,
+      "recall_applicable": false,
+      "hard_violations": [],
+      "expected_match_kind": null,
+      "actual_match_kind": null,
+      "match_kind_ok": null,
+      "expected_row_status": "not_applicable",
+      "row_status": null,
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [],
+      "response": "天气我这边查不了，不过不影响聊采购。你这次要买哪类：紧固件、轴承还是电气元件？顺便说下规格和数量。",
+      "reference": "属于闲聊，应简短回应并引导回工业品采购。",
+      "elapsed": 1.92,
+      "error": null
+    },
+    {
+      "case_id": "chat-knowledge-023",
+      "user_input": "螺丝和螺栓有什么区别",
+      "tags": [
+        "知识问答"
+      ],
+      "expected_stage": "chat",
+      "actual_stage": "chat",
+      "stage_ok": true,
+      "expected_product_ids": [],
+      "candidate_ids": [],
+      "recall_at_3": null,
+      "mrr": null,
+      "recall_applicable": false,
+      "hard_violations": [],
+      "expected_match_kind": null,
+      "actual_match_kind": null,
+      "match_kind_ok": null,
+      "expected_row_status": "not_applicable",
+      "row_status": null,
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [],
+      "response": "螺丝通常配螺母或直接攻入工件，螺栓多配螺母锁紧。您要采购哪类紧固件，规格和数量大概多少？",
+      "reference": "属于知识问答，应解释区别（螺栓配螺母、螺丝多用于螺纹孔），并引导到具体采购需求。",
+      "elapsed": 2.12,
+      "error": null
+    },
+    {
+      "case_id": "chat-greeting-024",
+      "user_input": "你好",
+      "tags": [
+        "闲聊",
+        "问候"
+      ],
+      "expected_stage": "chat",
+      "actual_stage": "chat",
+      "stage_ok": true,
+      "expected_product_ids": [],
+      "candidate_ids": [],
+      "recall_at_3": null,
+      "mrr": null,
+      "recall_applicable": false,
+      "hard_violations": [],
+      "expected_match_kind": null,
+      "actual_match_kind": null,
+      "match_kind_ok": null,
+      "expected_row_status": "not_applicable",
+      "row_status": null,
+      "row_status_ok": true,
+      "severe_orderable_error": false,
+      "contexts": [],
+      "response": "你好，需要采购什么工业品？我们主要做紧固件、轴承和电气元件，说说你要的品类、规格和数量。",
+      "reference": "简单问候，应礼貌回应并说明能帮什么。",
+      "elapsed": 1.4,
+      "error": null
+    }
+  ]
+}

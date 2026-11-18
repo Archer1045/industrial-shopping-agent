@@ -26,6 +26,7 @@ if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
 
 from app import main as app_main  # noqa: E402
+from app.demand import excluded_heads, extract_head, normalize  # noqa: E402
 
 DATASET = Path(__file__).resolve().parent / "dataset.jsonl"
 DOCS = BACKEND.parent / "docs"
@@ -115,6 +116,15 @@ def build_row(case: dict, collected: dict) -> dict:
     items = result.get("items") or []
     rows = result.get("rows") or []
     demand = result.get("demand") or {}
+    # 头型判定上线前采集的 raw 没有 head 字段，按同一套规则现补，
+    # 先做简称归一（圆柱头、杯头），保证 replay 重算出来的行状态和线上判定口径一致。
+    if "head" not in demand:
+        raw_query = normalize(str(demand.get("raw_query") or ""))
+        demand = {
+            **demand,
+            "head": extract_head(raw_query),
+            "head_excluded": excluded_heads(raw_query),
+        }
     stage = result.get("stage")
 
     # 多需求：候选来自各行；缺参行没有候选，不参与召回

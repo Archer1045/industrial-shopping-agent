@@ -101,6 +101,98 @@ def extract_attrs(text: str) -> dict:
             break
     return attrs
 
+
+# 头型：用户明确说了头型时才参与「能不能标可下单」的判断。
+# 商品库里没有独立字段，头型写在商品名里（「内六角圆柱头」「内六角沉头」「外六角」），
+# 所以按族比较。内六角族只认「内六角」：裸「沉头」是头部形状，不等于内六角，不参与判断。
+# 顺序有讲究：先判外六角，因为「内六角」里也含「六角」。
+HEAD_WORDS = {
+    "外六角": ("外六角", "六角头"),
+    "内六角": ("内六角",),
+}
+
+# 否定词：出现在同一子句里时，该子句的头型词算「被排除」。
+# 「除了外六角都行」「别给我外六角」「我不太想要外六角」都靠这里识别。
+_NEGATION_WORDS = (
+    "不要", "不用", "不需要", "无需", "别用", "别给", "不是", "非",
+    "除了", "不太想", "不太想要", "不想要",
+)
+
+# 放宽词：两族同时点名且出现这些词时，头型不作为约束；单独出现时清掉历史头型
+_RELAX_WORDS = ("都行", "都可以", "都接受", "都ok", "无所谓", "哪种都", "不限", "随便", "都要")
+
+# 子句分隔：否定只看同一子句，避免「外六角的价格不要太贵」这种跨句误伤
+_CLAUSE_SPLIT = re.compile(r"[，,。；;！!？?\n]+")
+
+
+def _clauses(text: str) -> list[str]:
+    """按中文标点切子句。"""
+    return [c.strip() for c in _CLAUSE_SPLIT.split(text or "") if c.strip()]
+
+
+def _tagged_heads(text: str) -> tuple[list[str], list[str]]:
+    """扫描文本里的头型词，返回 (点名的族, 被排除的族)。
+
+    按子句判断：子句里出现否定词，该子句的头型词算被排除；否则算点名。
+    这样「不要外六角和内六角」「外六角和内六角都不要」都能覆盖。
+    """
+    mentioned: list[str] = []
+    negated: list[str] = []
+    for clause in _clauses(text):
+        hit = [head for head, words in HEAD_WORDS.items() if any(w in clause for w in words)]
+        if not hit:
+            continue
+        target = negated if any(w in clause for w in _NEGATION_WORDS) else mentioned
+        for head in hit:
+            if head not in target:
+                target.append(head)
+    return mentioned, negated
+
+
+def extract_head(text: str) -> str | None:
+    """提取用户点名的头型族；没点名头型时返回 None，后续不做头型判定。
+
+    否定语境（「不要外六角」）不算点名；两族都点名且带「都行」这类放宽词时也不作约束。
+    没写「外六角 / 内六角 / 六角头」的「六角螺母」之类不在这里猜，交给检索和正文说明。
+    """
+    mentioned, _ = _tagged_heads(text)
+    named = set(mentioned)
+    if len(named) == 2 and any(w in text.lower() for w in _RELAX_WORDS):
+        return None
+    if "外六角" in named:
+        return "外六角"
+    if "内六角" in named:
+        return "内六角"
+    return None
+
+
+def excluded_heads(text: str) -> tuple[str, ...]:
+    """提取用户明确排除的头型族，和 extract_head 互补。
+
+    只有没点名要哪一族时才参与判定：「除了外六角都行」「不要外六角了」
+    「外六角和内六角都不要」都在这里表达。点名了某族时排除只是衬句，忽略。
+    """
+    mentioned, negated = _tagged_heads(text)
+    if mentioned:
+        return ()
+    return tuple(negated)
+
+
+def head_explicit(text: str) -> bool:
+    """文本是否对头型做了明确表态：点名某一族、明确排除，或单纯放宽。
+
+    用来区分「没提头型」和「明确不要某个头型」，后者合并历史画像时不能被旧值盖回去。
+    """
+    mentioned, negated = _tagged_heads(text)
+    named = set(mentioned)
+    if len(named) == 2 and any(w in text.lower() for w in _RELAX_WORDS):
+        return True
+    if not named and not negated and any(w in text.lower() for w in _RELAX_WORDS):
+        # 单说「随便 / 哪个都行」：头型不限，也算明确表态
+        return True
+    return bool(named) or bool(negated)
+
+
 # 意图判断用的词表。品类名本身也算——用户会直接说「我要紧固件」
 _ALL_CATEGORY_WORDS = tuple(
     [w for words in CATEGORY_WORDS.values() for w in words] + list(CATEGORY_WORDS.keys())
@@ -242,6 +334,29 @@ def merge_with_history(query: str, history: list | None) -> str | None:
     return f"{' '.join(reversed(parts))} {text}"
 
 
+def _head_from_users(users: list[str]) -> tuple[str | None, tuple[str, ...]]:
+    """按时间倒序找最近一次明确的头型表态。
+
+    返回 (要的族, 排除的族)。最近一句点名了某一族就取它；最近一句明确排除、
+    两族放宽或单纯说「随便」时返回 None，用来清除更早的旧头型。
+    全程没提过头型也返回 (None, ())。
+    """
+    for text in reversed(users):
+        norm = normalize(text)
+        mentioned, negated = _tagged_heads(norm)
+        named = set(mentioned)
+        if len(named) == 2 and any(w in norm.lower() for w in _RELAX_WORDS):
+            return None, ()
+        if named:
+            return ("外六角" if "外六角" in named else "内六角"), ()
+        if negated:
+            return None, tuple(negated)
+        if any(w in norm.lower() for w in _RELAX_WORDS):
+            # 只说「随便 / 哪个都行」：头型不限
+            return None, ()
+    return None, ()
+
+
 def history_demand(history: list | None, limit: int = 4) -> dict | None:
     """把历史里最近几条用户原话依次解析并累积，得到「目前已经知道什么」的画像。
 
@@ -252,6 +367,9 @@ def history_demand(history: list | None, limit: int = 4) -> dict | None:
         for m in (history or [])
         if m.get("role") == "user" and str(m.get("content", "")).strip()
     ][-limit:]
+    # 头型单独按「最近一次明确表态」取值，不从累积文本里取：
+    # 累积文本按顺序会先命中外六角，用户改成内六角后仍保留旧值，后续只说数量也会继承错误
+    latest_head, latest_excluded = _head_from_users(users)
     acc_text = ""
     acc = None
     for text in users:
@@ -264,6 +382,8 @@ def history_demand(history: list | None, limit: int = 4) -> dict | None:
             acc = {
                 "category": single["category"],
                 "material": d["material"],
+                "head": latest_head,
+                "head_excluded": latest_excluded,
                 "process": d.get("process"),
                 "origin": d.get("origin"),
                 "industry": d.get("industry"),
@@ -293,6 +413,13 @@ def merge_demand(current: dict, prev: dict | None) -> dict:
     merged = dict(current)
     merged["category"] = prev["category"]
     merged["material"] = current["material"] or prev.get("material")
+    # 当前句明确表态时以当前为准（明确否定就是清空）；没提头型才继承历史
+    if current.get("head_explicit"):
+        merged["head"] = current.get("head")
+        merged["head_excluded"] = current.get("head_excluded") or ()
+    else:
+        merged["head"] = current.get("head") or prev.get("head")
+        merged["head_excluded"] = current.get("head_excluded") or prev.get("head_excluded") or ()
     for key in ("process", "origin", "industry"):
         merged[key] = current.get(key) or prev.get(key)
     params = dict(prev.get("params") or {})
@@ -428,6 +555,9 @@ def parse_demand(query: str) -> dict:
         "raw_query": query,
         "category": category,
         "material": material,
+        "head": extract_head(text),
+        "head_excluded": excluded_heads(text),
+        "head_explicit": head_explicit(text),
         "process": attrs.get("process"),
         "origin": attrs.get("origin"),
         "industry": attrs.get("industry"),

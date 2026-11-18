@@ -590,10 +590,27 @@ IMAGE_MIME = {
 }
 
 
+# 商品名里常见的头型写法，从具体到泛化排列，供 product_head 取第一个命中的。
+HEAD_LABELS = ("内六角圆柱头", "内六角沉头", "平头内六角", "外六角", "内六角")
+
+
+def product_head(name: str) -> tuple[str | None, str | None]:
+    """从商品名读头型，返回 (族, 具体写法)；名里没写头型时返回 (None, None)。
+
+    库里头型只存在于商品名，没有独立字段，所以这里按名字匹配；
+    匹配不到就当成「库里没说」，不参与冲突判断，避免误伤。
+    """
+    for label in HEAD_LABELS:
+        if label in name:
+            family = "外六角" if label == "外六角" else "内六角"
+            return family, label
+    return None, None
+
+
 def _attr_conflicts(demand: dict, product: dict) -> list[str]:
     """用户明确要求、但商品不满足的软属性，逐条说明原因。
 
-    产地/品牌/材质/工艺/行业只做软排序不硬删，代价是可能推出不满足要求的商品，
+    产地/品牌/材质/工艺/行业/头型只做软排序不硬删，代价是可能推出不满足要求的商品，
     这里把差异说清楚，避免把替代品写成「可下单」。
     """
     out = []
@@ -608,6 +625,15 @@ def _attr_conflicts(demand: dict, product: dict) -> list[str]:
         have = product.get("material") or ""
         if want_material not in have:
             out.append(f"材质是{have}，不是{want_material}")
+    name = product.get("name") or ""
+    want_head = demand.get("head")
+    want_excluded = tuple(demand.get("head_excluded") or ())
+    if want_head or want_excluded:
+        have_family, have_label = product_head(name)
+        if want_head and have_family and have_family != want_head:
+            out.append(f"头型是{have_label}，不是{want_head}")
+        elif not want_head and have_family in want_excluded:
+            out.append(f"头型是{have_label}，属于您排除的类型")
     for field, label in (("process", "工艺"), ("industry", "适用行业"), ("brand", "品牌")):
         want = demand.get(field)
         if want and product.get(field) and want not in str(product.get(field)):
