@@ -145,6 +145,17 @@ def _with_city_note(reply: str, demand: dict) -> str:
     return note + reply
 
 
+ADVISORY_NOTE = (
+    "【通用提示】以上价格、MOQ、交期为候选信息，下单前请与供应商核对；"
+    "税率、账期、运费以实际结算为准；如需备损，建议按用量加订 3%~5% 并确认是否可拆零。"
+)
+
+
+def _with_advisory(reply: str) -> str:
+    """通用提示由系统统一追加，正文只保留可核对的事实。"""
+    return reply.rstrip() + "\n\n---\n\n" + ADVISORY_NOTE
+
+
 def _template_reply(results: list[dict], demand: dict) -> str:
     lines = ["按你的需求，找到这些："]
     for i, r in enumerate(results, 1):

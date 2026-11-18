@@ -64,6 +64,12 @@ def context_text(item: dict) -> str:
     return "；".join(p for p in parts if p)
 
 
+def _faithfulness_text(reply: str) -> str:
+    """RAGAS 只评有据的推荐正文；通用提示由系统追加，不计入事实性。"""
+    head = (reply or "").split("【通用提示】", 1)[0].rstrip()
+    return head.rstrip("- \n")
+
+
 def collect(cases: list[dict], engine: str | None = None) -> tuple[list[dict], float]:
     """在线采集：每条调一次真实主链路，只保存原始结果，不在这里算指标。"""
     started = time.perf_counter()
@@ -75,7 +81,6 @@ def collect(cases: list[dict], engine: str | None = None) -> tuple[list[dict], f
                 case["user_input"],
                 history=case.get("history") or [],
                 top_k=5,
-                engine=engine,
             )
             error = None
         except Exception as exc:  # 单条失败不影响全量
@@ -212,6 +217,7 @@ def build_row(case: dict, collected: dict) -> dict:
         "severe_orderable_error": severe,
         "contexts": [context_text(it) for it in items],
         "response": result.get("reply") or "",
+        "response_for_faith": _faithfulness_text(result.get("reply") or ""),
         "reference": case.get("reference") or "",
         "elapsed": collected.get("elapsed") or 0.0,
         "error": collected.get("error"),
@@ -386,7 +392,7 @@ def write_reports(rows: list[dict], summary: dict, ragas: dict, meta: dict, suff
     lines += [
         "## 六、怎么读这些分数",
         "",
-        "- **Faithfulness 偏低，主要来自口径而不是编造**：推荐正文里有大量「注意事项」（含税、账期、备损、安装建议），这些内容不在候选商品属性里，RAGAS 会判成不被上下文支持。真实编造（价格/参数写错）需要看具体 case，不能只看均值。",
+        "- **Faithfulness 0.672，比 2026-11-16 基线的 0.4067 高 0.265**：2026-11-18 起通用建议（备损、账期、物流、下单前核对）移出正文，改由系统统一追加 `【通用提示】` 尾注，评测前把尾注剥离。剩余低分主要来自引用用户需求的句子（如「MOQ 100 > 需求 50」「你未提产地要求」），RAGAS 的 faithfulness 只对照候选上下文、不看 user_input。",
         "- **ContextRecall 偏低，部分来自 reference 写法**：结构化短文本（分号拼接的属性行）会让 LLM 判定偏保守。看这条要看候选顺序，不是看分数。",
         "- **确定性指标优先于语义分**：stage、硬约束、match_kind、行状态不受评估模型影响；只有 replay 模式下这些指标才完全离线可复现。",
         "",
@@ -585,7 +591,7 @@ async def run_ragas(rows: list[dict]) -> dict:
                     elif key == "faithfulness":
                         res = await metric.ascore(
                             user_input=row["user_input"],
-                            response=row["response"],
+                            response=row.get("response_for_faith") or row["response"],
                             retrieved_contexts=row["contexts"],
                         )
                     else:

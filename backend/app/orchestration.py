@@ -259,7 +259,7 @@ def build_graph(deps: Any) -> Any:
 
         return {
             "result": {
-                "reply": deps._with_city_note(reply, demand),
+                "reply": deps._with_advisory(deps._with_city_note(reply, demand)),
                 "demand": demand,
                 "items": results,
                 "stage": "results",
